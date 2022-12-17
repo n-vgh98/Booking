@@ -16,3 +16,13 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ('id', 'first_name', 'last_name', 'user_name', 'email', 'phone_number', 'nationality')
 
+
+class LoginUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'phone_number')
+
+    def create(self, validated_data):
+        return super().create(validated_data)
+
+

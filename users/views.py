@@ -1,8 +1,10 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from .serializers import *
+from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -29,3 +31,12 @@ class UserProfile(generics.RetrieveUpdateDestroyAPIView):
     #     profile = user.user_profile.get()
     #     print(profile)
     #     return Response(profile)
+
+
+class LoginUser(APIView):
+    def post(self, request, **validated_data):
+        serializer = LoginUserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
