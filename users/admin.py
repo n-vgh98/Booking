@@ -3,9 +3,9 @@ from .models import *
 
 
 class AdminUser(admin.ModelAdmin):
-    list_display = ('id', 'username', 'date_of_join', 'is_valid')
-    search_fields = ('first_name', 'last_name', 'username')
-    list_filter = ('is_valid',)
+    list_display = ('id', 'phone_number', 'date_joined', 'is_active')
+    search_fields = ('phone_number', 'date_joined')
+    list_filter = ('is_active',)
 
 
 class AdminNationality(admin.ModelAdmin):
