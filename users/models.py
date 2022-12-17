@@ -60,9 +60,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     first_name = models.CharField(max_length=150, blank=True, verbose_name="first name")
     last_name = models.CharField(max_length=150, blank=True, verbose_name="last name")
+    email = models.EmailField(max_length=254, blank=True, verbose_name="email address", unique=True)
     user_name = models.CharField(max_length=64, blank=True, verbose_name="user name")
     user = models.ForeignKey(User, related_name='user_profile', on_delete=models.CASCADE)
-    nationality = models.ForeignKey(Nationality, related_name='user_nationality', on_delete=models.DO_NOTHING)
+    nationality = models.ForeignKey(Nationality, related_name='user_nationality', null=True, blank=True, on_delete=models.DO_NOTHING)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
