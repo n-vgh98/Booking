@@ -8,3 +8,11 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'phone_number')
 
 
+class ProfileSerializer(serializers.ModelSerializer):
+    phone_number = serializers.CharField(source='user.phone_number', read_only=True)
+    nationality = serializers.CharField(source='nationality.nationality', read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ('id', 'first_name', 'last_name', 'email', 'phone_number', 'nationality')
+
