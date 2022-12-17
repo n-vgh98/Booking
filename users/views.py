@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from .serializers import *
 from rest_framework import generics
@@ -24,5 +24,8 @@ class UserProfile(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = (JWTAuthentication,)
 
-    # def get_object(self):
-    #     return self.request.user
+    # def get(self, request, pk, *args, **kwargs):
+    #     user = get_object_or_404(User, pk=pk)
+    #     profile = user.user_profile.get()
+    #     print(profile)
+    #     return Response(profile)
