@@ -70,10 +70,10 @@ class LoginUser(APIView):
         #     User.objects.create(
         #         phone_number=phone,
         #     )
-        global otp
+        # global otp
         otp = otp_generator()
-        cache.set(otp, otp, 60*2)
-        cache.add(phone, phone)
+        cache.set(phone, otp, 60*2)
+        # cache.set(phone, phone)
         print(cache.get(otp))
         # print(cache.get(phone))
 
@@ -82,19 +82,29 @@ class LoginUser(APIView):
     # @authentication_classes([JWTAuthentication])
     # @permission_classes(IsAuthenticated)
     def post(self, request, **validated_data):
-        phone = request.data.get('phone_number')
-        if phone:
-            if User.objects.filter(phone_number=phone).exists():
-                user = get_object_or_404(User, phone_number=phone)
-                # if phone == cache.get(phone):
-                # print(cache.get(phone))
+        phone_number = request.data.get('phone_number')
+        user_otp = request.data.get('otp')
+        if phone_number:
+            if user_otp == cache.get(phone_number):
+                if User.objects.filter(phone_number=phone_number).exists():
+                    user = get_object_or_404(User, phone_number=phone_number)
+                    # if phone == cache.get(phone):
+                    print(cache.get(phone_number))
+                    # print(cache.get(otp))
+                    #check currect otp and phone_otp
+                    token = get_tokens_for_user(user)
+                    return Response({"token": token}, status=200)
+                serializer = LoginUserSerializer(data=request.data)
+                if serializer.is_valid():
+                    # check currect otp and phone_otp
+                    user = serializer.save()
+                    Profile.objects.create(user=user)
+                    token = get_tokens_for_user(user)
+                    return Response({"token": token}, status=200)
                 # print(cache.get(otp))
-                #check currect otp and phone_otp
-                token = get_tokens_for_user(user)
-                return Response({"token": token}, status=200)
-            print(cache.get(otp))
-            return Response({"error": 'not found'}, status=400)
-        return Response({"phone": phone}, status=200)
+                return Response({"error": 'your phone is not valid'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": 'your otp is not valid'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"phone": "phone number is required, please enter"}, status=status.HTTP_400_BAD_REQUEST)
 
         #
         # serializer = LoginUserSerializer(data=request.data)
