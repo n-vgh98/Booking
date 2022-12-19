@@ -21,11 +21,11 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('The Email must be set'))
         # phone_number = self.phone_number
         user = self.model(phone_number=phone_number, **extra_fields)
-        user.set_password(password)
+        user.set_password(null=True, blank=True)
         user.save()
         return user
 
-    def create_superuser(self, phone_number, password, **extra_fields):
+    def create_superuser(self, phone_number, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
@@ -34,7 +34,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('Superuser must have is_staff=True.'))
         if extra_fields.get('is_superuser') is not True:
             raise ValueError(_('Superuser must have is_superuser=True.'))
-        return self.create_user(phone_number, password, **extra_fields)
+        return self.create_user(phone_number, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -58,11 +58,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(models.Model):
-    first_name = models.CharField(max_length=150, blank=True, verbose_name="first name")
-    last_name = models.CharField(max_length=150, blank=True, verbose_name="last name")
-    email = models.EmailField(max_length=254, blank=True, verbose_name="email address", unique=True)
-    user_name = models.CharField(max_length=64, blank=True, verbose_name="user name")
-    user = models.ForeignKey(User, related_name='user_profile', on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=150, null=True, blank=True, verbose_name="first name")
+    last_name = models.CharField(max_length=150, null=True, blank=True, verbose_name="last name")
+    email = models.EmailField(max_length=254, null=True, blank=True, verbose_name="email address", unique=True)
+    user_name = models.CharField(max_length=64, null=True, blank=True, verbose_name="user name")
+    user = models.ForeignKey(User, related_name='user_profile', null=True, on_delete=models.CASCADE)
     nationality = models.ForeignKey(Nationality, related_name='user_nationality', null=True, blank=True, on_delete=models.DO_NOTHING)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)

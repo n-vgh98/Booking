@@ -134,14 +134,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
+    'PERMISSION_CLASSES': [
             'rest_framework.permissions.IsAuthenticated',
         ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
 
 SIMPLE_JWT = {
-     'AUTH_HEADER_TYPES': ('JWT',),
+     'AUTH_HEADER_TYPES': ('JWT', 'Bearer'),
 }

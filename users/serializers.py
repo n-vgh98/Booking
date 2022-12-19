@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import *
 
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -20,9 +19,5 @@ class ProfileSerializer(serializers.ModelSerializer):
 class LoginUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'phone_number')
-
-    def create(self, validated_data):
-        return super().create(validated_data)
-
+        fields = ('id', 'phone_number',)
 
