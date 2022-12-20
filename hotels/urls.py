@@ -1,15 +1,9 @@
-from django.contrib import admin
 from django.urls import path, include
-from rest_framework_simplejwt.views import TokenRefreshView
+from hotels import views
 
-from users import views
-from rest_framework_simplejwt import views as jwt_views
-
-
-from users.views import LoginUser
 
 urlpatterns = [
-    path('', views.UserList.as_view(), name='user_list'),
-
+    path('', views.HotelLists.as_view(), name='hotel_lists'),
+    path('<int:pk>', views.HotelRoom.as_view(), name='hotel_rooms')
 
 ]
