@@ -17,7 +17,7 @@ class HotelFeature(AbstractFeature):
 class HotelRoom(AbstractPlace):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_nam="hotel_rooms")
     floor = models.SmallIntegerField()
-    count = models.PositiveSmallIntegerField
+    pluck = models.PositiveSmallIntegerField()
     # day_price = models.ForeignKey()
     # data_price = models.ForeignKey()
     extra_bed = models.BooleanField(default=False)
@@ -27,3 +27,11 @@ class HotelRoom(AbstractPlace):
 
 class HotelRoomFeature(AbstractFeature):
     Room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name="room_features")
+
+class HotelRoomCount(models.Model):
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_rooms_count')
+    room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name='rooms_count')
+    count = models.PositiveSmallIntegerField()
+
+    def reserved_room(self):
+        pass
