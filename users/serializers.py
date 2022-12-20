@@ -21,8 +21,4 @@ class LoginUserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'phone_number',)
 
-    def create(self, validated_data):
-        return super().create(validated_data)
-
-
 

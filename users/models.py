@@ -21,7 +21,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('The Email must be set'))
         # phone_number = self.phone_number
         user = self.model(phone_number=phone_number, **extra_fields)
-        user.set_password(null=True, blank=True)
+        user.set_password()
         user.save()
         return user
 
