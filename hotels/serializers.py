@@ -8,9 +8,23 @@ class HotelSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'star',)
 
 
-class RoomHotelSerializer(serializers.Serializer):
+class HotelFeature(serializers.ModelSerializer):
+    class Meta:
+        model = HotelFeature
+        fields = ('id', 'title', 'hotel')
+
+
+class HotelRoomSerializer(serializers.ModelSerializer):
     hotel = serializers.SlugRelatedField(many=True, read_only=True, slug_field='title')
 
     class Meta:
-        model = RoomHotel
-        fields = ('id', 'title', 'hotel', 'floor', 'pluck', 'breakfast', 'extra_bed', 'reserve')
+        model = HotelRoom
+        fields = ('id', 'description', 'title', 'hotel', 'floor', 'count', 'breakfast', 'extra_bed',)
+
+
+class HotelRoomFeatureSerializer(serializers.ModelSerializer):
+    room = HotelRoomSerializer
+
+    class Meta:
+        model = HotelRoomFeature
+        fields = ('id', 'title', 'room')
