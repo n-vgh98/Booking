@@ -28,3 +28,4 @@ class HotelRoomFeatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = HotelRoomFeature
         fields = ('id', 'title', 'room')
+
