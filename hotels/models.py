@@ -2,6 +2,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 from abstracts.models import AbstractPlace, AbstractFeature
+from locations.models import AbstractLocation
 
 
 class Hotel(AbstractPlace):
@@ -30,7 +31,6 @@ class HotelRoom(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
-
     def __str__(self):
         return self.title
 
@@ -39,10 +39,5 @@ class HotelRoomFeature(AbstractFeature):
     Room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name="room_features")
 
 
-# class HotelRoomCount(models.Model):
-#     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_rooms_count')
-#     room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name='rooms_count')
-#     count = models.PositiveSmallIntegerField()
-#
-#     def reserved_room(self):
-#         pass
+class HotelLocation(AbstractLocation):
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_location')

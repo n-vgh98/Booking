@@ -22,12 +22,13 @@ class AdminHotelRoomFeature(admin.ModelAdmin):
     list_filter = ('is_valid',)
 
 
-# class AdminHotelRoomCount(admin.ModelAdmin):
-#     list_display = ('id', 'hotel', 'room', 'count')
+class AdminHotelLocation(admin.ModelAdmin):
+    list_display = ('id', 'hotel', 'room', 'count')
 
 
 admin.site.register(Hotel, AdminHotel)
 admin.site.register(HotelRoom, AdminHotelRoom)
 admin.site.register(HotelFeature, AdminHotelFeature)
 admin.site.register(HotelRoomFeature, AdminHotelRoomFeature)
+admin.site.register(HotelLocation,)
 # admin.site.register(HotelRoomCount, AdminHotelRoomCount)

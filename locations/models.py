@@ -18,6 +18,10 @@ class Province(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
+    @property
+    def get_country_name(self):
+        return self.country.name
+
 
 class City(models.Model):
     name = models.CharField(max_length=64)
