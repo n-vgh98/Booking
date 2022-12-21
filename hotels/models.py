@@ -17,7 +17,7 @@ class HotelFeature(AbstractFeature):
 
 class HotelRoom(models.Model):
     title = models.CharField(max_length=128)
-    description = models.TextField()
+    description = models.TextField(null=True)
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotel_rooms")
     floor = models.SmallIntegerField()
     count = models.PositiveSmallIntegerField()

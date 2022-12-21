@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .serializers import *
@@ -20,11 +21,10 @@ class HotelLists(generics.ListCreateAPIView):
 
 
 class HotelRoom(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = HotelRoomSerializer
-    queryset = HotelRoom.objects.all()
-
-    # def get_queryset(self):
-    #     # city = self.request.data.get('city')
-    #     hotel = self.get(Hotel, pk=self.id)
-    #     if self.request.method == 'GET':
-    #         return hotel
+    serializer_class = HotelSerializer
+    queryset = Hotel.objects.all()
+    #
+    # def retrieve(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance)
+    #     return Response(serializer.data)

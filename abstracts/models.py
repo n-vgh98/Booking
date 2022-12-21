@@ -14,7 +14,7 @@ class AbstractFeature(models.Model):
 
 class AbstractPlace(models.Model):
     title = models.CharField(max_length=128)
-    description = models.TextField()
+    description = models.TextField(null=True)
     is_valid = models.BooleanField(default=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='places_city')
     address_detail = models.TextField(verbose_name='address detail')
