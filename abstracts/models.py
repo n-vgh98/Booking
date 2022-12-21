@@ -14,9 +14,9 @@ class AbstractFeature(models.Model):
 
 class AbstractPlace(models.Model):
     title = models.CharField(max_length=128)
-    description = models.TextField(null=True)
+    description = models.TextField(null=True,  blank=True)
     is_valid = models.BooleanField(default=True)
-    address_detail = models.TextField(verbose_name='address detail')
+    address_detail = models.TextField(verbose_name='address detail', )
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
