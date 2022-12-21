@@ -29,6 +29,24 @@ class AdminResidenceFeature(admin.ModelAdmin):
     list_filter = ('is_valid',)
 
 
+class AdminResidenceRule(admin.ModelAdmin):
+    list_display = ('id', 'check_in', 'check_out', 'residence', 'is_valid')
+    list_filter = ('is_valid',)
+
+
+class AdminResidenceComment(admin.ModelAdmin):
+    list_display = ('id', 'residence', 'user', 'status')
+    list_filter = ('status',)
+
+    def save_model(self, request, obj, form, change):
+        if change and not obj.validated_by and 'status' in form.changed_data:
+            obj.validated_by = request.user
+
+        obj.save()
+
+
 admin.site.register(Residence, AdminResidence)
 admin.site.register(ResidenceCategory, AdminResidenceCategory)
 admin.site.register(ResidenceFeature, AdminResidenceFeature)
+admin.site.register(ResidenceComment, AdminResidenceComment)
+admin.site.register(ResidenceRule, AdminResidenceRule)

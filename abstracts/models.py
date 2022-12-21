@@ -82,7 +82,7 @@ class AbstractRate(models.Model):
 class AbstractRule(models.Model):
     check_in = models.TimeField(verbose_name='check in time')
     check_out = models.TimeField(verbose_name='check out time')
-    text = models.TextField(null=True)
+    text = models.TextField(null=True, blank=True)
     is_valid = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)

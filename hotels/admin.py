@@ -50,6 +50,22 @@ class AdminHotelRoomFeature(admin.ModelAdmin):
     # inlines = (HotelName,)
 
 
+class AdminHoteRule(admin.ModelAdmin):
+    list_display = ('id', 'check_in', 'check_out', 'hotel', 'is_valid')
+    list_filter = ('is_valid',)
+
+
+class AdminHotelComment(admin.ModelAdmin):
+    list_display = ('id', 'hotel', 'user', 'status')
+    list_filter = ('status',)
+
+    def save_model(self, request, obj, form, change):
+        if change and not obj.validated_by and 'status' in form.changed_data:
+            obj.validated_by = request.user
+
+        obj.save()
+
+
 # class AdminHotelLocation(admin.ModelAdmin):
 #     list_display = ('id', 'get_hotel_title', 'get_city_name', 'get_province_name', 'get_country_name', 'is_valid')
 #     list_filter = ('is_valid',)
@@ -60,4 +76,6 @@ admin.site.register(Hotel, AdminHotel)
 admin.site.register(HotelRoom, AdminHotelRoom)
 admin.site.register(HotelFeature, AdminHotelFeature)
 admin.site.register(HotelRoomFeature, AdminHotelRoomFeature)
+admin.site.register(HotelRule, AdminHoteRule)
+admin.site.register(HotelComment, AdminHotelComment)
 # admin.site.register(HotelLocation, AdminHotelLocation)
