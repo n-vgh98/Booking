@@ -29,10 +29,27 @@ class HotelSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'star',)
 
 
+class HotelRuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HotelRule
+        fields = ('check_in', 'check_out', 'text')
+
+
+class HotelCommentSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.phone_number', read_only=True)
+    class Meta:
+        model = HotelComment
+        fields = ('user', 'comment_body', 'created_time')
+
+
 class HotelDetailSerializer(serializers.ModelSerializer):
     hotel_rooms = HotelRoomSerializer(many=True)
     hotel_features = HotelFeature(many=True)
+    hotel_rules = HotelRuleSerializer(many=True)
+    hotel_comments = HotelCommentSerializer(many=True)
 
     class Meta:
         model = Hotel
-        fields = ('id', 'title', 'description', 'hotel_features', 'star', 'hotel_rooms',)
+        fields = (
+            'id', 'title', 'average_rating', 'description', 'hotel_features', 'star', 'hotel_rooms', 'hotel_rules',
+            'hotel_comments')

@@ -3,13 +3,16 @@ from django.db import models
 
 from abstracts.locations.models import City
 from abstracts.models import *
+from django.db.models import Avg
 
 
 class Hotel(AbstractPlace):
     star = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
 
-    def rate(self):
-        pass
+    @property
+    def average_rating(self):
+        rate = self.hotel_rates.all().aggregate(avg=Avg('rate'))
+        return rate.get('avg') or 1
 
 
 class HotelFeature(AbstractFeature):

@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.db.models import Avg
 from abstracts.locations.models import City
 from abstracts.models import *
 
@@ -21,8 +21,10 @@ class Residence(AbstractPlace):
     single_bed = models.SmallIntegerField(default=0)
     double_bed = models.SmallIntegerField(default=0)
 
-    def rate(self):
-        pass
+    @property
+    def average_rating(self):
+        rate = self.residence_rates.all().aggregate(avg=Avg('rate'))
+        return rate.get('avg') or 1
 
 
 class ResidenceFeature(AbstractFeature):
