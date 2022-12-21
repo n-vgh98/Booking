@@ -2,11 +2,10 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 from abstracts.locations.models import City
-from abstracts.models import AbstractPlace, AbstractFeature
+from abstracts.models import *
 
 
 class Hotel(AbstractPlace):
-    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='hotels_city')
     star = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
 
     def rate(self):
@@ -39,6 +38,20 @@ class HotelRoom(models.Model):
 class HotelRoomFeature(AbstractFeature):
     room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name="room_features")
 
+
+class HotelRate(AbstractRate):
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_rates')
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=('user', 'hotel'), name='unique_user_hotel_rate')]
+
+
+class HotelComment(AbstractComment):
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_comments')
+
+
+class HotelRule(AbstractRule):
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_rules')
 # class HotelLocation(AbstractLocation):
 #     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_location')
 #

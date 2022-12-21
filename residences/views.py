@@ -6,7 +6,7 @@ from rest_framework import generics
 
 class ResidenceList(generics.ListCreateAPIView):
     serializer_class = ResidenceSerializer
-    queryset = Residence.objects.all()
+    queryset = Residence.objects.filter(is_valid=True)
 
     def get_queryset(self):
         city = self.request.data.get('city')
@@ -17,4 +17,4 @@ class ResidenceList(generics.ListCreateAPIView):
 
 class ResidenceDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ResidenceDetailSerializer
-    queryset = Residence.objects.all()
+    queryset = Residence.objects.filter(is_valid=True)

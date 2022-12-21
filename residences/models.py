@@ -1,7 +1,7 @@
 from django.db import models
 
 from abstracts.locations.models import City
-from abstracts.models import AbstractPlace, AbstractFeature
+from abstracts.models import *
 
 
 class ResidenceCategory(models.Model):
@@ -16,7 +16,6 @@ class ResidenceCategory(models.Model):
 
 class Residence(AbstractPlace):
     category = models.ForeignKey(ResidenceCategory, on_delete=models.NOT_PROVIDED, related_name='residence_category')
-    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='residence_city')
     capacity = models.SmallIntegerField(default=1)
     rooms = models.SmallIntegerField(default=0)
     single_bed = models.SmallIntegerField(default=0)
@@ -28,3 +27,18 @@ class Residence(AbstractPlace):
 
 class ResidenceFeature(AbstractFeature):
     residence = models.ForeignKey(Residence, on_delete=models.CASCADE, related_name='residence_features')
+
+
+class ResidenceRate(AbstractRate):
+    residence = models.ForeignKey(Residence, on_delete=models.CASCADE, related_name='residence_rates')
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=('user', 'residence'), name='unique_user_residence_rate')]
+
+
+class ResidenceComment(AbstractComment):
+    residence = models.ForeignKey(Residence, on_delete=models.CASCADE, related_name='residence_comments')
+
+
+class ResidenceRule(AbstractRule):
+    residence = models.ForeignKey(Residence, on_delete=models.CASCADE, related_name='residence_rules')
