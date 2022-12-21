@@ -1,3 +1,20 @@
 from django.shortcuts import render
+from .serializers import *
+from .models import *
+from rest_framework import generics
 
-# Create your views here.
+
+class ResidenceList(generics.ListCreateAPIView):
+    serializer_class = ResidenceSerializer
+    queryset = Residence.objects.all()
+
+    def get_queryset(self):
+        city = self.request.data.get('city')
+        if self.request.method == 'GET':
+            query = Residence.objects.filter(city__name=city)
+            return query
+
+
+class ResidenceDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ResidenceDetailSerializer
+    queryset = Residence.objects.all()

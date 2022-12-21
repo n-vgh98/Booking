@@ -20,7 +20,7 @@ class HotelLists(generics.ListCreateAPIView):
 
 
 class HotelDetail(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = HotelSerializer
+    serializer_class = HotelDetailSerializer
     queryset = Hotel.objects.all()
     #
     # def retrieve(self, request, *args, **kwargs):

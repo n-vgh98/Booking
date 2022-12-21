@@ -24,6 +24,12 @@ class HotelRoomSerializer(serializers.ModelSerializer):
 
 
 class HotelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hotel
+        fields = ('id', 'title', 'description', 'star',)
+
+
+class HotelDetailSerializer(serializers.ModelSerializer):
     hotel_rooms = HotelRoomSerializer(many=True)
     hotel_features = HotelFeature(many=True)
 
