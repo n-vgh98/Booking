@@ -1,14 +1,30 @@
 from django.shortcuts import render
+from rest_framework.views import APIView
+
 from .serializers import *
 from .models import *
 from rest_framework import generics
+from django.shortcuts import render, redirect, get_object_or_404
 
 
 class HotelLists(generics.ListCreateAPIView):
     serializer_class = HotelSerializer
     queryset = Hotel.objects.all()
 
+    def get_queryset(self):
+        city = self.request.data.get('city')
+        if self.request.method == 'GET':
+            query = Hotel.objects.filter(city__name=city)
+            return query
+
+
 
 class HotelRoom(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = HotelRoomSerializer
     queryset = HotelRoom.objects.all()
+
+    # def get_queryset(self):
+    #     # city = self.request.data.get('city')
+    #     hotel = self.get(Hotel, pk=self.id)
+    #     if self.request.method == 'GET':
+    #         return hotel

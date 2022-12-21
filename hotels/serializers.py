@@ -3,9 +3,10 @@ from .models import *
 
 
 class HotelSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Hotel
-        fields = ('id', 'title', 'description', 'star',)
+        fields = ('id', 'title', 'description', 'star')
 
 
 class HotelFeature(serializers.ModelSerializer):

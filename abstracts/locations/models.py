@@ -40,13 +40,23 @@ class City(models.Model):
         return self.province.country.name
 
 
-class AbstractLocation(models.Model):
-
-    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='location_city')
-    detail_text = models.TextField()
-    is_valid = models.BooleanField(default=True)
-    created_time = models.DateTimeField(auto_now_add=True)
-    modified_time = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract =True
+# class AbstractLocation(models.Model):
+#
+#     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='location_city')
+#     detail_text = models.TextField()
+#     is_valid = models.BooleanField(default=True)
+#     created_time = models.DateTimeField(auto_now_add=True)
+#     modified_time = models.DateTimeField(auto_now=True)
+#
+#     class Meta:
+#         abstract =True
+#
+#     @property
+#     def get_city_name(self):
+#         return self.city.name
+#
+#     def get_province_name(self):
+#         return self.city.province.name
+#
+#     def get_country_name(self):
+#         return self.city.province.country.name

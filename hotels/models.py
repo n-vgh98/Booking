@@ -2,7 +2,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 from abstracts.models import AbstractPlace, AbstractFeature
-from locations.models import AbstractLocation
 
 
 class Hotel(AbstractPlace):
@@ -36,8 +35,13 @@ class HotelRoom(models.Model):
 
 
 class HotelRoomFeature(AbstractFeature):
-    Room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name="room_features")
+    room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name="room_features")
 
-
-class HotelLocation(AbstractLocation):
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_location')
+# class HotelLocation(AbstractLocation):
+#     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_location')
+#
+#     def get_hotel_title(self):
+#         return self.hotel.title
+#
+#     def __str__(self):
+#         return self.city.name
