@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'hotels',
     'abstracts',
     'abstracts.locations',
-    'residence',
+    'residences',
 ]
 
 MIDDLEWARE = [

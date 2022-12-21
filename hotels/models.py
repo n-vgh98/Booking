@@ -1,10 +1,12 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
+from abstracts.locations.models import City
 from abstracts.models import AbstractPlace, AbstractFeature
 
 
 class Hotel(AbstractPlace):
+    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='hotels_city')
     star = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
 
     def rate(self):

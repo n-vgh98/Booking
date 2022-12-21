@@ -16,7 +16,6 @@ class AbstractPlace(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField(null=True)
     is_valid = models.BooleanField(default=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='places_city')
     address_detail = models.TextField(verbose_name='address detail')
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
