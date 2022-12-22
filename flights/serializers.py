@@ -30,5 +30,5 @@ class FlightSerializer(serializers.ModelSerializer):
     class Meta:
         model = FlightTicket
         fields = (
-            'origin', 'destination', 'airline', 'type', 'flight_class', 'flight_number',
+            'origin', 'destination', 'price', 'airline', 'type', 'flight_class', 'flight_number',
             'luggage_allowance', 'origin_time', 'destination_time')

@@ -105,8 +105,8 @@ class AbstractTerminal(models.Model):
 class AbstractTicket(models.Model):
     # price
     capacity = models.SmallIntegerField(default=1)
-    origin_time = models.TimeField()
-    destination_time = models.TimeField()
+    origin_time = models.DateTimeField()
+    destination_time = models.DateTimeField()
     is_valid = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
