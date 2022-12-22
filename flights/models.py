@@ -14,6 +14,13 @@ class TerminalAirport(models.Model):
     modified_time = models.DateTimeField(auto_now=True)
 
 
+class AirlineCompany(models.Model):
+    name = models.CharField(max_length=64)
+    is_valid = models.BooleanField(default=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+    modified_time = models.DateTimeField(auto_now=True)
+
+
 class FlightTicket(AbstractTicket):
     SYSTEMIC = 1
     CHARTER = 0
@@ -33,5 +40,9 @@ class FlightTicket(AbstractTicket):
     origin = models.ForeignKey(Airport, on_delete=models.DO_NOTHING, related_name='origin_flight_airport')
     destination = models.ForeignKey(Airport, on_delete=models.DO_NOTHING,
                                     related_name='destination_flight_airport')
+    airline = models.ForeignKey(AirlineCompany, on_delete=models.CASCADE, related_name='ticket_airline')
     type = models.BooleanField(choices=TYPE_CHOICES, default=SYSTEMIC)
     flight_class = models.PositiveSmallIntegerField(choices=FLIGHT_CLASS)
+    flight_number = models.PositiveSmallIntegerField()
+    luggage_allowance = models.PositiveSmallIntegerField(default=20)
+

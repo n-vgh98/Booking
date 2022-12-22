@@ -33,6 +33,12 @@ class AdminTerminalAirport(admin.ModelAdmin):
         return obj.airport.name
 
 
+class AdminAirline(admin.ModelAdmin):
+    list_display = ('id', 'name', 'is_valid')
+    list_filter = ('is_valid',)
+
+
 admin.site.register(Airport, AdminAirport)
 admin.site.register(TerminalAirport, AdminTerminalAirport)
 admin.site.register(FlightTicket, AdminFlightTicket)
+admin.site.register(AirlineCompany, AdminAirline)
