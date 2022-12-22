@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'abstracts',
     'abstracts.locations',
     'residences',
-    'tickets',
+    'flights',
 ]
 
 MIDDLEWARE = [

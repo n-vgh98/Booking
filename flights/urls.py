@@ -1,5 +1,5 @@
 from django.urls import path, include
-from tickets import views
+from flights import views
 
 
 urlpatterns = [

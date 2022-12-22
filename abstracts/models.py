@@ -89,3 +89,7 @@ class AbstractRule(models.Model):
 
     class Meta:
         abstract = True
+
+
+# class AbstractTicket(models.Model):
+    # origin = models.ForeignKey(City, on_delete=models.)
