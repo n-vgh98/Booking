@@ -26,7 +26,7 @@ class HotelRoom(models.Model):
     floor = models.SmallIntegerField()
     count = models.PositiveSmallIntegerField()
     # day_price = models.ForeignKey()
-    # data_price = models.ForeignKey()
+    # date_price = models.ForeignKey()
     extra_bed = models.BooleanField(default=False)
     breakfast = models.BooleanField(default=True)
     # reserve = models.BooleanField(default=False)

@@ -91,5 +91,25 @@ class AbstractRule(models.Model):
         abstract = True
 
 
-# class AbstractTicket(models.Model):
-    # origin = models.ForeignKey(City, on_delete=models.)
+class AbstractTerminal(models.Model):
+    name = models.CharField(max_length=64)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='terminal_city_%(class)s')
+    is_valid = models.BooleanField(default=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+    modified_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class AbstractTicket(models.Model):
+    # price
+    capacity = models.SmallIntegerField(default=1)
+    origin_time = models.TimeField()
+    destination_time = models.TimeField()
+    is_valid = models.BooleanField(default=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+    modified_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
