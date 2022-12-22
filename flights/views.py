@@ -8,8 +8,11 @@ from rest_framework import generics
 class FlightsList(generics.ListCreateAPIView):
     serializer_class = FlightSerializer
     queryset = FlightTicket.objects.filter(is_valid=True)
-    # def get_queryset(self):
-    #     city = self.request.data.get('city')
-    #     if self.request.method == 'GET':
-    #         query = Hotel.objects.filter(city__name=city)
-    #         return query
+
+    def get_queryset(self):
+        origin = self.request.data.get('origin')
+        destination = self.request.data.get('destination')
+        if self.request.method == 'GET':
+            query = FlightTicket.objects.filter(origin__city__name=origin, destination__city__name=destination)
+            return query
+

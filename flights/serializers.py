@@ -23,8 +23,8 @@ class AirlineCompanySerializer(serializers.ModelSerializer):
 
 
 class FlightSerializer(serializers.ModelSerializer):
-    origin = serializers.CharField(source='origin.name', read_only=True)
-    destination = serializers.CharField(source='destination.name', read_only=True)
+    origin = serializers.CharField(source='origin.city.name', read_only=True)
+    destination = serializers.CharField(source='destination.city.name', read_only=True)
     airline = serializers.CharField(source='airline.name', read_only=True)
 
     class Meta:
