@@ -71,6 +71,22 @@ class AdminHotelComment(admin.ModelAdmin):
 #     list_filter = ('is_valid',)
 # inlines = (AdminHotelCity, )
 
+class AdminHotelDailyPrice(admin.ModelAdmin):
+    list_display = ('id', 'day', 'price', 'get_hotel_name', 'room', 'is_valid')
+    list_filter = ('is_valid',)
+
+    @admin.display(description='hotel')
+    def get_hotel_name(self, obj):
+        return obj.room.hotel.title
+
+class AdminHotelSpecialPrice(admin.ModelAdmin):
+    list_display = ('id', 'start_date', 'end_date', 'room', 'get_hotel_name', 'is_valid')
+    list_filter = ('is_valid',)
+
+    @admin.display(description='hotel')
+    def get_hotel_name(self, obj):
+        return obj.room.hotel.title
+
 
 admin.site.register(Hotel, AdminHotel)
 admin.site.register(HotelRoom, AdminHotelRoom)
@@ -78,4 +94,6 @@ admin.site.register(HotelFeature, AdminHotelFeature)
 admin.site.register(HotelRoomFeature, AdminHotelRoomFeature)
 admin.site.register(HotelRule, AdminHoteRule)
 admin.site.register(HotelComment, AdminHotelComment)
+admin.site.register(HotelDailyPrice, AdminHotelDailyPrice)
+admin.site.register(HotelSpecialPrice, AdminHotelSpecialPrice)
 # admin.site.register(HotelLocation, AdminHotelLocation)

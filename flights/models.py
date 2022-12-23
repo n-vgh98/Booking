@@ -43,7 +43,6 @@ class FlightTicket(AbstractTicket):
                                     related_name='destination_flight_airport')
     airline = models.ForeignKey(AirlineCompany, on_delete=models.CASCADE, related_name='ticket_airline')
     type = models.BooleanField(choices=TYPE_CHOICES, default=SYSTEMIC)
-    price = models.DecimalField(max_digits=12, decimal_places=2, null=True)
     flight_class = models.PositiveSmallIntegerField(choices=FLIGHT_CLASS)
     flight_number = models.PositiveSmallIntegerField()
     luggage_allowance = models.PositiveSmallIntegerField(default=20)

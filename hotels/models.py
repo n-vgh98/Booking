@@ -1,6 +1,6 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-
+from django.core.exceptions import ValidationError
 from abstracts.locations.models import City
 from abstracts.models import *
 from django.db.models import Avg
@@ -55,6 +55,8 @@ class HotelComment(AbstractComment):
 
 class HotelRule(AbstractRule):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_rules')
+
+
 # class HotelLocation(AbstractLocation):
 #     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name='hotel_location')
 #
@@ -63,3 +65,25 @@ class HotelRule(AbstractRule):
 #
 #     def __str__(self):
 #         return self.city.name
+
+class HotelDailyPrice(AbstractDailyPrice):
+    room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name='daily_room_price')
+
+
+class HotelSpecialPrice(AbstractSpecialPrice):
+    room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name='special_room_price')
+
+    # def clean_start_date(self):
+    #     today = timezone.now().date()
+    #     if self.start_date > today:
+    #         return self.start_date
+    #     return ValidationError('start_date not valid')
+
+    def save(self, *args, **kwargs):
+        today = timezone.now().date()
+        try:
+            if self.start_date >= today and self.end_date > self.start_date:
+                return super(HotelSpecialPrice, self).save(*args, **kwargs)
+        except:
+            return ValidationError('start_date not valid')
+
