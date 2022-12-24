@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+
+from abstracts.currencies.models import Currency
 from abstracts.locations.models import City
 from django.utils import timezone
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -118,13 +120,13 @@ class AbstractTicket(models.Model):
 
 
 class AbstractDailyPrice(models.Model):
-    SATURDAY = 1
-    SUNDAY = 2
-    MONDAY = 3
-    TUESDAY = 4
-    WEDNESDAY = 5
-    THURSDAY = 6
-    FRIDAY = 7
+    SATURDAY = 5
+    SUNDAY = 6
+    MONDAY = 0
+    TUESDAY = 1
+    WEDNESDAY = 2
+    THURSDAY = 3
+    FRIDAY = 4
     DAY_CHOICES = (
         (SATURDAY, 'saturday'),
         (SUNDAY, 'sunday'),
@@ -135,7 +137,8 @@ class AbstractDailyPrice(models.Model):
         (FRIDAY, 'friday')
     )
     day = models.PositiveSmallIntegerField(choices=DAY_CHOICES, default=SATURDAY)
-    price = models.CharField(max_length=15)
+    currency = models.ForeignKey(Currency, on_delete=models.DO_NOTHING, related_name='daily_price_currency')
+    price = models.FloatField()
     is_valid = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
@@ -147,10 +150,12 @@ class AbstractDailyPrice(models.Model):
 class AbstractSpecialPrice(models.Model):
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    price = models.CharField(max_length=15)
+    currency = models.ForeignKey(Currency, on_delete=models.DO_NOTHING, related_name='special_price_currency')
+    price = models.FloatField()
     is_valid = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
+

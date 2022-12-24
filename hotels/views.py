@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from .serializers import *
 from .models import *
 from rest_framework import generics
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 
 
 class HotelLists(generics.ListCreateAPIView):
@@ -20,10 +20,23 @@ class HotelLists(generics.ListCreateAPIView):
 
 
 class HotelDetail(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = HotelDetailSerializer
     queryset = Hotel.objects.filter(is_valid=True)
-    #
-    # def retrieve(self, request, *args, **kwargs):
-    #     instance = self.get_object()
-    #     serializer = self.get_serializer(instance)
-    #     return Response(serializer.data)
+
+    def get_serializer_class(self):
+        if Hotel.objects.prefetch_related('hotel_rooms__special_room_price').exists():
+            return HotelDetailSpecialPriceSerializer
+        return HotelDetailDailyPriceSerializer
+
+    # def get_queryset(self, *args):
+    #     # hotel_id = self.kwargs['pk']
+    #     # room_id = HotelRoom.objects.filter(hotel__id=hotel_id)
+    #     if Hotel.objects.prefetch_related('hotel_rooms__special_room_price'):
+    #         return Hotel.objects.prefetch_related('hotel_rooms__special_room_price')
+    #     return Hotel.objects.prefetch_related('hotel_rooms__daily_room_price')
+    #     # try:
+        #     special_price =
+        #     return special_price
+        # except:
+        #     daily_price =
+        #     return daily_price
+        # return Hotel.objects.filter(id=hotel_id)

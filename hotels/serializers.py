@@ -14,13 +14,40 @@ class HotelRoomFeatureSerializer(serializers.ModelSerializer):
         fields = ('id', 'title',)
 
 
-class HotelRoomSerializer(serializers.ModelSerializer):
-    # hotel = serializers.CharField(read_only=True, source='hotel.title')
+class HotelDailyPriceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HotelDailyPrice
+        fields = ('price',)
+
+
+class HotelSpecialPriceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HotelSpecialPrice
+        fields = ('price',)
+
+
+class HotelRoomDailyPriceSerializer(serializers.ModelSerializer):
     room_features = HotelRoomFeatureSerializer(many=True)
+    price = HotelDailyPriceSerializer(many=True, source='daily_room_price')
 
     class Meta:
         model = HotelRoom
-        fields = ('title', 'description', 'floor', 'breakfast', 'extra_bed', 'room_features')
+        fields = ('title', 'description', 'price', 'floor', 'breakfast', 'extra_bed',
+                  'room_features')
+
+
+class HotelRoomSpecialPriceSerializer(serializers.ModelSerializer):
+    # hotel = serializers.CharField(read_only=True, source='hotel.title')
+    room_features = HotelRoomFeatureSerializer(many=True)
+    price = HotelDailyPriceSerializer(many=True, source='special_room_price')
+
+    class Meta:
+        model = HotelRoom
+        fields = ('title', 'description', 'price', 'floor', 'breakfast', 'extra_bed',
+                  'room_features')
+
+    # def validators(self, fields):
+    #     if fields.get('')
 
 
 class HotelSerializer(serializers.ModelSerializer):
@@ -37,13 +64,14 @@ class HotelRuleSerializer(serializers.ModelSerializer):
 
 class HotelCommentSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.phone_number', read_only=True)
+
     class Meta:
         model = HotelComment
         fields = ('user', 'comment_body', 'created_time')
 
 
-class HotelDetailSerializer(serializers.ModelSerializer):
-    hotel_rooms = HotelRoomSerializer(many=True)
+class HotelDetailDailyPriceSerializer(serializers.ModelSerializer):
+    hotel_rooms = HotelRoomDailyPriceSerializer(many=True)
     hotel_features = HotelFeature(many=True)
     hotel_rules = HotelRuleSerializer(many=True)
     hotel_comments = HotelCommentSerializer(many=True)
@@ -51,5 +79,20 @@ class HotelDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hotel
         fields = (
-            'id', 'title', 'average_rating', 'description', 'hotel_features', 'star', 'hotel_rooms', 'hotel_rules',
+            'id', 'title', 'average_rating', 'description', 'hotel_features', 'star', 'hotel_rooms',
+            'hotel_rules',
+            'hotel_comments')
+
+
+class HotelDetailSpecialPriceSerializer(serializers.ModelSerializer):
+    hotel_rooms = HotelRoomSpecialPriceSerializer(many=True)
+    hotel_features = HotelFeature(many=True)
+    hotel_rules = HotelRuleSerializer(many=True)
+    hotel_comments = HotelCommentSerializer(many=True)
+
+    class Meta:
+        model = Hotel
+        fields = (
+            'id', 'title', 'average_rating', 'description', 'hotel_features', 'star', 'hotel_rooms',
+            'hotel_rules',
             'hotel_comments')

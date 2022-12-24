@@ -23,7 +23,6 @@ class HotelRoom(models.Model):
     title = models.CharField(max_length=128)
     description = models.TextField(null=True)
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, related_name="hotel_rooms")
-    floor = models.SmallIntegerField()
     count = models.PositiveSmallIntegerField()
     # day_price = models.ForeignKey()
     # date_price = models.ForeignKey()
@@ -73,16 +72,10 @@ class HotelDailyPrice(AbstractDailyPrice):
 class HotelSpecialPrice(AbstractSpecialPrice):
     room = models.ForeignKey(HotelRoom, on_delete=models.CASCADE, related_name='special_room_price')
 
-    # def clean_start_date(self):
-    #     today = timezone.now().date()
-    #     if self.start_date > today:
-    #         return self.start_date
-    #     return ValidationError('start_date not valid')
-
     def save(self, *args, **kwargs):
         today = timezone.now().date()
         try:
-            if self.start_date >= today and self.end_date > self.start_date:
+            if self.end_date > self.start_date >= today:
                 return super(HotelSpecialPrice, self).save(*args, **kwargs)
         except:
             return ValidationError('start_date not valid')
