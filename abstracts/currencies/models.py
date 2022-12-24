@@ -7,11 +7,9 @@ class Currency(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
-    # def save(
-    #         self, force_insert=False, force_update=False, using=None, update_fields=None
-    # ):
-    #     self.code = self.code.upper()
-    #     return super().save(force_insert, force_update, using, update_fields)
+    def save(self, *args, **kwargs):
+        self.code = self.code.upper()
+        return super(Currency, self).save(self, *args, **kwargs)
 
 
 class CurrencyExchangeRate(models.Model):
