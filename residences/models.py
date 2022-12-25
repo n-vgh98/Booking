@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Avg
 from abstracts.locations.models import City
@@ -44,3 +45,19 @@ class ResidenceComment(AbstractComment):
 
 class ResidenceRule(AbstractRule):
     residence = models.ForeignKey(Residence, on_delete=models.CASCADE, related_name='residence_rules')
+
+
+class ResidenceDailyPrice(AbstractDailyPrice):
+    residence = models.ForeignKey(Residence, on_delete=models.CASCADE, related_name='daily_residence_price')
+
+
+class ResidenceSpecialPrice(AbstractSpecialPrice):
+    residence = models.ForeignKey(Residence, on_delete=models.CASCADE, related_name='special_residence_price')
+
+    def save(self, *args, **kwargs):
+        today = timezone.now().date()
+        try:
+            if self.end_date > self.start_date >= today:
+                return super(ResidenceSpecialPrice, self).save(*args, **kwargs)
+        except:
+            return ValidationError('start_date not valid')

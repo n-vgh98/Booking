@@ -148,7 +148,7 @@ class AbstractDailyPrice(AbstractPrice):
         (THURSDAY, 'thursday'),
         (FRIDAY, 'friday')
     )
-    day = models.PositiveSmallIntegerField(choices=DAY_CHOICES, default=SATURDAY)
+    day = models.PositiveSmallIntegerField(choices=DAY_CHOICES, default=MONDAY)
 
     class Meta:
         abstract = True

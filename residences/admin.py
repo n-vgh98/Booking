@@ -45,8 +45,20 @@ class AdminResidenceComment(admin.ModelAdmin):
         obj.save()
 
 
+class AdminResidenceDailyPrice(admin.ModelAdmin):
+    list_display = ('id', 'day', 'price', 'residence', 'is_valid')
+    list_filter = ('is_valid',)
+
+
+class AdminResidenceSpecialPrice(admin.ModelAdmin):
+    list_display = ('id', 'start_date', 'end_date', 'residence', 'is_valid')
+    list_filter = ('is_valid',)
+
+
 admin.site.register(Residence, AdminResidence)
 admin.site.register(ResidenceCategory, AdminResidenceCategory)
 admin.site.register(ResidenceFeature, AdminResidenceFeature)
 admin.site.register(ResidenceComment, AdminResidenceComment)
 admin.site.register(ResidenceRule, AdminResidenceRule)
+admin.site.register(ResidenceDailyPrice, AdminResidenceDailyPrice)
+admin.site.register(ResidenceSpecialPrice, AdminResidenceSpecialPrice)
