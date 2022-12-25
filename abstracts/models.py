@@ -105,12 +105,9 @@ class AbstractTerminal(models.Model):
         abstract = True
 
 
-class AbstractTicket(models.Model):
-    # price
-    capacity = models.SmallIntegerField(default=1)
-    origin_time = models.DateTimeField()
-    destination_time = models.DateTimeField()
-    price = models.CharField(max_length=15)
+class AbstractPrice(models.Model):
+    currency = models.ForeignKey(Currency, on_delete=models.DO_NOTHING, related_name='price_currency_%(class)s')
+    price = models.FloatField()
     is_valid = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
@@ -119,7 +116,22 @@ class AbstractTicket(models.Model):
         abstract = True
 
 
-class AbstractDailyPrice(models.Model):
+class AbstractTicket(models.Model):
+    # price
+    capacity = models.SmallIntegerField(default=1)
+    origin_time = models.DateTimeField()
+    destination_time = models.DateTimeField()
+    currency = models.ForeignKey(Currency, on_delete=models.DO_NOTHING, related_name='price_currency_flight_tickets')
+    price = models.FloatField()
+    is_valid = models.BooleanField(default=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+    modified_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class AbstractDailyPrice(AbstractPrice):
     SATURDAY = 5
     SUNDAY = 6
     MONDAY = 0
@@ -137,25 +149,14 @@ class AbstractDailyPrice(models.Model):
         (FRIDAY, 'friday')
     )
     day = models.PositiveSmallIntegerField(choices=DAY_CHOICES, default=SATURDAY)
-    currency = models.ForeignKey(Currency, on_delete=models.DO_NOTHING, related_name='daily_price_currency')
-    price = models.FloatField()
-    is_valid = models.BooleanField(default=True)
-    created_time = models.DateTimeField(auto_now_add=True)
-    modified_time = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
 
 
-class AbstractSpecialPrice(models.Model):
+class AbstractSpecialPrice(AbstractPrice):
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    currency = models.ForeignKey(Currency, on_delete=models.DO_NOTHING, related_name='special_price_currency')
-    price = models.FloatField()
-    is_valid = models.BooleanField(default=True)
-    created_time = models.DateTimeField(auto_now_add=True)
-    modified_time = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
-
