@@ -28,13 +28,28 @@ class ResidenceCommentSerializer(serializers.ModelSerializer):
         fields = ('user', 'comment_body', 'created_time')
 
 
+class ResidenceDailyPriceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResidenceDailyPrice
+        fields = ('price',)
+
+
+class ResidenceSpecialPriceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResidenceSpecialPrice
+        fields = ('price',)
+
+
 class ResidenceDetailSerializer(serializers.ModelSerializer):
     residence_features = ResidenceFeature(many=True)
     residence_rules = ResidenceRuleSerializer(many=True)
     residence_comments = ResidenceCommentSerializer(many=True)
+    daily_residence_price = ResidenceDailyPriceSerializer(many=True)
+    special_residence_price = ResidenceSpecialPriceSerializer(many=True)
 
     class Meta:
         model = Residence
         fields = (
-        'title', 'capacity', 'description', 'average_rating', 'rooms', 'single_bed', 'double_bed', 'residence_features',
-        'residence_rules', 'residence_comments')
+            'title', 'capacity', 'description', 'daily_residence_price', 'special_residence_price', 'average_rating',
+            'rooms', 'single_bed', 'double_bed', 'residence_features',
+            'residence_rules', 'residence_comments')
