@@ -160,3 +160,23 @@ class AbstractSpecialPrice(AbstractPrice):
 
     class Meta:
         abstract = True
+
+
+class AbstractGallery(models.Model):
+    name = models.CharField(max_length=52)
+    is_valid = models.BooleanField(default=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+    modified_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class AbstractImageGallery(models.Model):
+    path = models.ImageField()
+    is_valid = models.BooleanField(default=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+    modified_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True

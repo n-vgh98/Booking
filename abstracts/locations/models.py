@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Country(models.Model):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     is_valid = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
@@ -11,12 +11,16 @@ class Country(models.Model):
         verbose_name_plural = "countries"
 
 
+
 class Province(models.Model):
     name = models.CharField(max_length=64)
     country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='provinces_of_country')
     is_valid = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=('name', 'country'), name='unique_province_country')]
 
     @property
     def get_country_name(self):
@@ -31,6 +35,7 @@ class City(models.Model):
     modified_time = models.DateTimeField(auto_now=True)
 
     class Meta:
+        constraints = [models.UniqueConstraint(fields=('name', 'province'), name='unique_city_province')]
         verbose_name_plural = "cities"
 
     def get_province_name(self):
