@@ -38,7 +38,31 @@ class AdminAirline(admin.ModelAdmin):
     list_filter = ('is_valid',)
 
 
+class AdminFlightReservations(admin.ModelAdmin):
+    list_display = ('id', 'origin_airport', 'destination_airport', 'user', 'status')
+    list_filter = ('status',)
+
+    @admin.display(description='origin')
+    def origin_airport(self, obj):
+        return obj.flight.origin.registration_code
+
+    @admin.display(description='destination')
+    def destination_airport(self, obj):
+        return obj.flight.destination.registration_code
+
+
+class AdminFlightReservationsPassenger(admin.ModelAdmin):
+    list_display = ('id', 'national_id', 'get_reservation_id')
+    search_filed = ('get_reservation_id ', 'national_id')
+
+    @admin.display(description='reservation')
+    def get_reservation_id(self, obj):
+        return obj.reservation.id
+
+
 admin.site.register(Airport, AdminAirport)
 admin.site.register(TerminalAirport, AdminTerminalAirport)
 admin.site.register(FlightTicket, AdminFlightTicket)
 admin.site.register(AirlineCompany, AdminAirline)
+admin.site.register(FlightReservation, AdminFlightReservations)
+admin.site.register(FlightPassengerReservation, AdminFlightReservationsPassenger)

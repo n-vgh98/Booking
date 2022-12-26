@@ -180,3 +180,29 @@ class AbstractImageGallery(models.Model):
 
     class Meta:
         abstract = True
+
+
+class AbstractReservation(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='user_reservations')
+    status = models.BooleanField(default=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        abstract = True
+
+
+class AbstractPassenger(models.Model):
+    MALE = 1
+    FEMALE = 2
+    GENDER_CHOICES = (
+        (MALE, ' male'),
+        (FEMALE, 'female')
+    )
+    first_name = models.CharField(max_length=16)
+    last_name = models.CharField(max_length=32)
+    national_id = models.PositiveIntegerField()
+    gender = models.PositiveSmallIntegerField(choices=GENDER_CHOICES, default=MALE)
+    created_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        abstract = True
