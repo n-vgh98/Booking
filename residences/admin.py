@@ -55,6 +55,20 @@ class AdminResidenceSpecialPrice(admin.ModelAdmin):
     list_filter = ('is_valid',)
 
 
+class AdminResidenceGallery(admin.ModelAdmin):
+    list_display = ('id', 'name', 'get_residence_name', 'is_valid')
+    list_filter = ('is_valid',)
+
+    @admin.display(description='hotel')
+    def get_residence_name(self, obj):
+        return obj.residence.title
+
+
+class AdminResidenceGalleryImage(admin.ModelAdmin):
+    list_display = ('id', 'is_valid')
+    list_filter = ('is_valid',)
+
+
 admin.site.register(Residence, AdminResidence)
 admin.site.register(ResidenceCategory, AdminResidenceCategory)
 admin.site.register(ResidenceFeature, AdminResidenceFeature)
@@ -62,3 +76,5 @@ admin.site.register(ResidenceComment, AdminResidenceComment)
 admin.site.register(ResidenceRule, AdminResidenceRule)
 admin.site.register(ResidenceDailyPrice, AdminResidenceDailyPrice)
 admin.site.register(ResidenceSpecialPrice, AdminResidenceSpecialPrice)
+admin.site.register(ResidenceGallery, AdminResidenceGallery)
+admin.site.register(ResidenceGalleryImage, AdminResidenceGalleryImage)

@@ -61,3 +61,17 @@ class ResidenceSpecialPrice(AbstractSpecialPrice):
                 return super(ResidenceSpecialPrice, self).save(*args, **kwargs)
         except:
             return ValidationError('start_date not valid')
+
+
+class ResidenceGallery(AbstractGallery):
+    residence = models.ForeignKey(Residence, on_delete=models.CASCADE, related_name='residence_gallery')
+
+    class Meta:
+        verbose_name_plural = "Residence Galleries"
+
+
+class ResidenceGalleryImage(AbstractImageGallery):
+    gallery = models.ForeignKey(ResidenceGallery, on_delete=models.CASCADE, related_name='residence_gallery_images')
+    path = models.ImageField(upload_to='Residence/')
+    title = models.CharField(max_length=128, null=True, blank=True)
+    alt = models.CharField(max_length=128, null=True, blank=True)

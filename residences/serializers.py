@@ -39,6 +39,17 @@ class ResidenceSpecialPriceSerializer(serializers.ModelSerializer):
         model = ResidenceSpecialPrice
         fields = ('price',)
 
+class ResidenceImageGallery(serializers.ModelSerializer):
+    class Meta:
+        model = ResidenceGalleryImage
+        fields = ('path', 'title', 'alt')
+
+class ResidenceGallery(serializers.ModelSerializer):
+    residence_gallery_images = ResidenceImageGallery(many=True)
+    class Meta:
+        model = ResidenceGallery
+        fields = ('name', 'residence_gallery_images')
+
 
 class ResidenceDetailSerializer(serializers.ModelSerializer):
     residence_features = ResidenceFeature(many=True)
@@ -46,10 +57,11 @@ class ResidenceDetailSerializer(serializers.ModelSerializer):
     residence_comments = ResidenceCommentSerializer(many=True)
     daily_residence_price = ResidenceDailyPriceSerializer(many=True)
     special_residence_price = ResidenceSpecialPriceSerializer(many=True)
+    residence_gallery = ResidenceGallery(many=True)
 
     class Meta:
         model = Residence
         fields = (
             'title', 'capacity', 'description', 'daily_residence_price', 'special_residence_price', 'average_rating',
-            'rooms', 'single_bed', 'double_bed', 'residence_features',
+            'residence_gallery', 'rooms', 'single_bed', 'double_bed', 'residence_features',
             'residence_rules', 'residence_comments')

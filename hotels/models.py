@@ -89,18 +89,6 @@ class HotelGallery(AbstractGallery):
     class Meta:
         verbose_name_plural = "Hotel Galleries"
 
-import os
-
-
-def get_image_path(filename):
-    return os.path.join('photos', filename)
-
-def get_images_upload_location(image_instance, filename):
-    filename = image_instance.gallery.hotel.title
-    if not os.path.exists(filename):
-        src = os.makedirs(filename)
-        return '{}/'.format(src)
-
 
 class HotelGalleryImage(AbstractImageGallery):
     gallery = models.ForeignKey(HotelGallery, on_delete=models.CASCADE, related_name='hotel_gallery_images')
