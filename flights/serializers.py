@@ -22,13 +22,36 @@ class AirlineCompanySerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 
+class PassengerReservationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FlightPassengerReservation
+        fields = '__all__'
+
+
 class FlightSerializer(serializers.ModelSerializer):
     origin = serializers.CharField(source='origin.city.name', read_only=True)
     destination = serializers.CharField(source='destination.city.name', read_only=True)
     airline = serializers.CharField(source='airline.name', read_only=True)
+    flight_class = serializers.SerializerMethodField()
+    type = serializers.SerializerMethodField()
+
+    def get_flight_class(self, obj):
+        return obj.get_flight_class_display()
+
+    def get_type(self, obj):
+        return obj.get_type_display()
 
     class Meta:
         model = FlightTicket
         fields = (
             'origin', 'destination', 'price', 'airline', 'type', 'flight_class', 'flight_number',
             'luggage_allowance', 'origin_time', 'destination_time')
+
+
+class FlightReservationSerializer(serializers.ModelSerializer):
+    # flight_reservation_passengers = PassengerReservationSerializer(many=True)
+    flight_reservations = FlightSerializer(many=True)
+
+    class Meta:
+        model = FlightReservation
+        fields = ('flight_reservations',)

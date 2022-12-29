@@ -10,7 +10,8 @@ from django.shortcuts import render, get_object_or_404
 
 class HotelLists(generics.ListCreateAPIView):
     serializer_class = HotelSerializer
-    queryset = Hotel.objects.filter(is_valid=True).order_by('star')
+    queryset = Hotel.objects.filter(is_valid=True)
+    ordering = ['-star']
 
     def get_queryset(self):
         city = self.request.data.get('city')
