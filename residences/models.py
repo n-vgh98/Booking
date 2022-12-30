@@ -78,7 +78,7 @@ class ResidenceGalleryImage(AbstractImageGallery):
 
 
 class ResidencePassengerReservation(AbstractPassenger):
-    age = models.PositiveSmallIntegerField(null=True, blank=True)
+    age = models.PositiveSmallIntegerField(null=True)
 
 
 class ResidenceReservation(AbstractReservation):
