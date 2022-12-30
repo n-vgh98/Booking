@@ -2,10 +2,15 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from users.models import User
 from .serializers import *
 from .models import *
 from rest_framework import generics
 from django.shortcuts import render, get_object_or_404
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
+
 
 
 class HotelLists(generics.ListCreateAPIView):
@@ -41,3 +46,24 @@ class HotelDetail(generics.RetrieveUpdateDestroyAPIView):
         #     daily_price =
         #     return daily_price
         # return Hotel.objects.filter(id=hotel_id)
+
+@api_view(['POST'])
+def create_reservation(request, pk):
+    room = get_object_or_404(HotelRoom, pk=pk)
+
+    passenger = HotelRoomPassengerReservation()
+    passenger.first_name = request.data['firstname']
+    passenger.last_name = request.data['lastname']
+    passenger.national_id = request.data['national_id']
+    passenger.gender = request.data['gender']
+    passenger.age = request.data['age']
+    passenger.save(passenger)
+
+    reservation = HotelRoomReservation()
+    reservation.room = room
+    reservation.passenger = passenger
+    reservation.user = User.objects.get(id=1)
+
+    HotelRoomReservation.save(reservation)
+
+    return Response(status=status.HTTP_201_CREATED)
