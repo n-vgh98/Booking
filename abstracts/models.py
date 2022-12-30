@@ -183,7 +183,8 @@ class AbstractImageGallery(models.Model):
 
 
 class AbstractReservation(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name='user_reservations')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING,
+                             related_name='%(class)s_user_reservations')
     status = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
 

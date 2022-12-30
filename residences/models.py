@@ -75,3 +75,13 @@ class ResidenceGalleryImage(AbstractImageGallery):
     path = models.ImageField(upload_to='Residence/')
     title = models.CharField(max_length=128, null=True, blank=True)
     alt = models.CharField(max_length=128, null=True, blank=True)
+
+
+class ResidencePassengerReservation(AbstractPassenger):
+    age = models.PositiveSmallIntegerField(null=True, blank=True)
+
+
+class ResidenceReservation(AbstractReservation):
+    residence = models.ForeignKey(Residence, on_delete=models.DO_NOTHING, related_name='residence_reservations')
+    passenger = models.ForeignKey(ResidencePassengerReservation, on_delete=models.CASCADE,
+                                  related_name='residence_reservation_passenger')
