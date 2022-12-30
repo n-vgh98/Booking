@@ -97,3 +97,13 @@ class HotelGalleryImage(AbstractImageGallery):
     path = models.ImageField(upload_to='Hotels/')
     title = models.CharField(max_length=128, null=True, blank=True)
     alt = models.CharField(max_length=128, null=True, blank=True)
+
+
+class HotelRoomPassengerReservation(AbstractPassenger):
+    age = models.PositiveSmallIntegerField(null=True)
+
+
+class HotelRoomReservation(AbstractReservation):
+    residence = models.ForeignKey(HotelRoom, on_delete=models.DO_NOTHING, related_name='hotel_room_reservations')
+    passenger = models.ForeignKey(HotelRoomPassengerReservation, on_delete=models.CASCADE,
+                                  related_name='hotel_room_reservation_passenger')
