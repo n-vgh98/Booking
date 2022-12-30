@@ -7,6 +7,9 @@ class Country(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name_plural = "countries"
 
@@ -18,6 +21,9 @@ class Province(models.Model):
     is_valid = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=('name', 'country'), name='unique_province_country')]
@@ -33,6 +39,9 @@ class City(models.Model):
     is_valid = models.BooleanField(default=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=('name', 'province'), name='unique_city_province')]

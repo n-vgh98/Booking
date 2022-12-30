@@ -44,14 +44,25 @@ class FlightSerializer(serializers.ModelSerializer):
     class Meta:
         model = FlightTicket
         fields = (
-            'origin', 'destination', 'price', 'airline', 'type', 'flight_class', 'flight_number',
-            'luggage_allowance', 'origin_time', 'destination_time')
+            'origin', 'destination', 'capacity', 'price', 'airline', 'type', 'flight_class', 'flight_number',
+            'luggage_allowance', 'date_of_departure', 'time_of_departure')
+
+
+class FlightPassengerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FlightPassengerReservation
+        fields = '__all__'
 
 
 class FlightReservationSerializer(serializers.ModelSerializer):
-    # flight_reservation_passengers = PassengerReservationSerializer(many=True)
-    flight_reservations = FlightSerializer(many=True)
-
     class Meta:
         model = FlightReservation
-        fields = ('flight_reservations',)
+        fields = '__all__'
+
+# class FlightReservationSerializer(serializers.ModelSerializer):
+#     # flight_reservation_passengers = PassengerReservationSerializer(many=True)
+#     flight_reservations = FlightSerializer(many=True)
+#
+#     class Meta:
+#         model = FlightReservation
+#         fields = ('flight_reservations',)

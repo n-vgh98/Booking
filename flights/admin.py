@@ -52,12 +52,12 @@ class AdminFlightReservations(admin.ModelAdmin):
 
 
 class AdminFlightReservationsPassenger(admin.ModelAdmin):
-    list_display = ('id', 'national_id', 'get_reservation_id')
-    search_filed = ('get_reservation_id ', 'national_id')
+    list_display = ('id', 'national_id')
+    search_filed = ('national_id', )
 
-    @admin.display(description='reservation')
-    def get_reservation_id(self, obj):
-        return obj.reservation.id
+    # @admin.display(description='reservation')
+    # def get_reservation_id(self, obj):
+    #     return obj.reservation.id
 
 
 admin.site.register(Airport, AdminAirport)

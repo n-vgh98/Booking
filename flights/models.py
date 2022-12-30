@@ -49,13 +49,23 @@ class FlightTicket(AbstractTicket):
     luggage_allowance = models.PositiveSmallIntegerField(default=20)
 
 
+class FlightPassengerReservation(AbstractPassenger):
+    # reservation = models.ForeignKey(FlightReservation, on_delete=models.CASCADE,
+    #                                 related_name='flight_reservation_passengers')
+    date_birth = models.DateField(null=True, blank=True)
 
 
 class FlightReservation(AbstractReservation):
     flight = models.ForeignKey(FlightTicket, on_delete=models.DO_NOTHING, related_name='flight_reservations')
+    passenger = models.ForeignKey(FlightPassengerReservation, on_delete=models.CASCADE,
+                                     related_name='flight_reservation_passenger')
+
+    def save(self, *args, **kwargs):
+        capacity = self.flight.capacity
+        print(capacity)
+        capacity -= 1
+        FlightTicket.objects.update(capacity=capacity)
+        print(capacity)
+        return super(FlightReservation, self).save(*args, *kwargs)
 
 
-class FlightPassengerReservation(AbstractPassenger):
-    reservation = models.ForeignKey(FlightReservation, on_delete=models.CASCADE,
-                                    related_name='flight_reservation_passengers')
-    date_birth = models.DateField()

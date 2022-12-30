@@ -119,8 +119,8 @@ class AbstractPrice(models.Model):
 class AbstractTicket(models.Model):
     # price
     capacity = models.SmallIntegerField(default=1)
-    origin_time = models.DateTimeField()
-    destination_time = models.DateTimeField()
+    date_of_departure = models.DateField()
+    time_of_departure = models.TimeField()
     currency = models.ForeignKey(Currency, on_delete=models.DO_NOTHING, related_name='price_currency_flight_tickets')
     price = models.FloatField()
     is_valid = models.BooleanField(default=True)
