@@ -105,6 +105,17 @@ class AdminHotelGalleryImage(admin.ModelAdmin):
     # def get_gallery_name(self, obj):
     #     return obj.gallery.name
 
+class AdminHotelRoomReservation(admin.ModelAdmin):
+    list_display = ('id', 'get_hotel_room_title', 'user', 'status')
+    list_filter = ('status', )
+
+    @admin.display(description='room')
+    def get_hotel_room_title(self, obj):
+        return obj.room.title
+
+class AdminHotelRoomReservationsPassenger(admin.ModelAdmin):
+    list_display = ('id', 'national_id')
+    search_filed = ('national_id', )
 
 admin.site.register(Hotel, AdminHotel)
 admin.site.register(HotelRoom, AdminHotelRoom)
@@ -116,4 +127,6 @@ admin.site.register(HotelDailyPrice, AdminHotelDailyPrice)
 admin.site.register(HotelSpecialPrice, AdminHotelSpecialPrice)
 admin.site.register(HotelGallery, AdminHotelGallery)
 admin.site.register(HotelGalleryImage, AdminHotelGalleryImage)
+admin.site.register(HotelRoomReservation, AdminHotelRoomReservation)
+admin.site.register(HotelRoomPassengerReservation, AdminHotelRoomReservationsPassenger)
 # admin.site.register(HotelLocation, AdminHotelLocation)

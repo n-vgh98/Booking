@@ -104,6 +104,6 @@ class HotelRoomPassengerReservation(AbstractPassenger):
 
 
 class HotelRoomReservation(AbstractReservation):
-    residence = models.ForeignKey(HotelRoom, on_delete=models.DO_NOTHING, related_name='hotel_room_reservations')
+    room = models.ForeignKey(HotelRoom, on_delete=models.DO_NOTHING, related_name='hotel_room_reservations')
     passenger = models.ForeignKey(HotelRoomPassengerReservation, on_delete=models.CASCADE,
                                   related_name='hotel_room_reservation_passenger')
