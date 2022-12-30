@@ -59,7 +59,7 @@ class AdminResidenceGallery(admin.ModelAdmin):
     list_display = ('id', 'name', 'get_residence_name', 'is_valid')
     list_filter = ('is_valid',)
 
-    @admin.display(description='hotel')
+    @admin.display(description='residence')
     def get_residence_name(self, obj):
         return obj.residence.title
 
@@ -68,6 +68,17 @@ class AdminResidenceGalleryImage(admin.ModelAdmin):
     list_display = ('id', 'is_valid')
     list_filter = ('is_valid',)
 
+class AdminResidenceReservation(admin.ModelAdmin):
+    list_display = ('id', 'get_residence_name', 'user', 'status')
+    list_filter = ('status', )
+
+    @admin.display(description='residence')
+    def get_residence_name(self, obj):
+        return obj.residence.title
+
+class AdminResidenceReservationsPassenger(admin.ModelAdmin):
+    list_display = ('id', 'national_id')
+    search_filed = ('national_id', )
 
 admin.site.register(Residence, AdminResidence)
 admin.site.register(ResidenceCategory, AdminResidenceCategory)
@@ -78,3 +89,5 @@ admin.site.register(ResidenceDailyPrice, AdminResidenceDailyPrice)
 admin.site.register(ResidenceSpecialPrice, AdminResidenceSpecialPrice)
 admin.site.register(ResidenceGallery, AdminResidenceGallery)
 admin.site.register(ResidenceGalleryImage, AdminResidenceGalleryImage)
+admin.site.register(ResidenceReservation, AdminResidenceReservation)
+admin.site.register(ResidencePassengerReservation, AdminResidenceReservationsPassenger)
