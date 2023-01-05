@@ -134,7 +134,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 if not DEBUG:
-    MINIO_ENDPOINT = config('MINIO_ENDPOINT', default='booking-vaghefi-storage-s3-console.darkube.app')
+    MINIO_ENDPOINT = config('MINIO_ENDPOINT')
     MINIO_ACCESS_KEY = config('MINIO_ACCESS_KEY')
     MINIO_SECRET_KEY = config('MINIO_SECRET_KEY')
     MINIO_USE_HTTPS = True
