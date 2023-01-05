@@ -54,6 +54,9 @@ INSTALLED_APPS = [
     'flights',
 ]
 
+if not DEBUG:
+    INSTALLED_APPS.append('django_minio_backend.apps.DjangoMinioBackendConfig')
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -129,8 +132,30 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+if not DEBUG:
+    MINIO_ENDPOINT = config('MINIO_ENDPOINT', default='booking-vaghefi-storage-s3-console.darkube.app')
+    MINIO_ACCESS_KEY = config('MINIO_ACCESS_KEY')
+    MINIO_SECRET_KEY = config('MINIO_SECRET_KEY')
+    MINIO_USE_HTTPS = True
+    MINIO_URL_EXPIRY_HOURS = timedelta(days=1)  # Default is 7 days (longest) if not defined
+
+    STATICFILES_STORAGE = 'django_minio_backend.models.MinioBackendStatic'
+    DEFAULT_FILE_STORAGE = 'django_minio_backend.models.MinioBackend'
+
+    MINIO_MEDIA_FILES_BUCKET = 'media'  # replacement for MEDIA_ROOT
+    MINIO_STATIC_FILES_BUCKET = 'static'  # replacement for STATIC_ROOT
+    MINIO_PUBLIC_BUCKETS = [
+        MINIO_MEDIA_FILES_BUCKET,
+        MINIO_STATIC_FILES_BUCKET
+    ]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
+
 MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 STATIC_URL = 'static/'
 
 # Default primary key field type
