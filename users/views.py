@@ -29,11 +29,6 @@ class UserList(generics.ListCreateAPIView):
     serializer_class = UserSerializer
 
 
-# class ProfileList(generics.ListCreateAPIView):
-#     queryset = Profile.objects.all()
-#     serializer_class = ProfileSerializer
-
-
 class UserProfile(generics.RetrieveUpdateDestroyAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -45,7 +40,6 @@ class UserProfile(generics.RetrieveUpdateDestroyAPIView):
     #     profile = user.user_profile.get()
     #     print(profile)
     #     return Response(profile)
-
 
 
 def otp_generator():
@@ -61,20 +55,19 @@ class LoginUser(APIView):
         if self.request.data.get("phone_number"):
             phone = self.request.data.get("phone_number")
         else:
-            return Response({"phone_number": "phone number is required, please enter"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"phone_number": "phone number is required, please enter"},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         otp = otp_generator()
-        cache.set(phone, otp, 60*2)
-        # cache.set(phone, phone)
+        cache.set(phone, otp, 60 * 2)
         print(cache.get(otp))
-        # print(cache.get(phone))
 
         return Response({"OTP": otp}, status=200)
 
     def post(self, request):
         phone_number = request.data.get('phone_number')
         user_otp = request.data.get('otp')
-        if phone_number:
+        if phone_number and user_otp:
             if user_otp == cache.get(phone_number):
                 if User.objects.filter(phone_number=phone_number).exists():
                     user = get_object_or_404(User, phone_number=phone_number)
@@ -92,4 +85,5 @@ class LoginUser(APIView):
                 # print(cache.get(otp))
                 return Response({"error": 'your phone is not valid'}, status=status.HTTP_400_BAD_REQUEST)
             return Response({"error": 'your otp is not valid'}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({"phone": "phone number is required, please enter"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"phone": "phone number or otp code is required, please enter"},
+                        status=status.HTTP_400_BAD_REQUEST)

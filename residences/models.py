@@ -85,3 +85,6 @@ class ResidenceReservation(AbstractReservation):
     residence = models.ForeignKey(Residence, on_delete=models.DO_NOTHING, related_name='residence_reservations')
     passenger = models.ForeignKey(ResidencePassengerReservation, on_delete=models.CASCADE,
                                   related_name='residence_reservation_passenger')
+    start_date = models.DateField()
+    end_date = models.DateField()
+

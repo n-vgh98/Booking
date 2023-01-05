@@ -107,3 +107,5 @@ class HotelRoomReservation(AbstractReservation):
     room = models.ForeignKey(HotelRoom, on_delete=models.DO_NOTHING, related_name='hotel_room_reservations')
     passenger = models.ForeignKey(HotelRoomPassengerReservation, on_delete=models.CASCADE,
                                   related_name='hotel_room_reservation_passenger')
+    start_date = models.DateField()
+    end_date = models.DateField()

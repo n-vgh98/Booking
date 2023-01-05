@@ -1,14 +1,13 @@
-from django.shortcuts import render
-from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.models import User
 from .serializers import *
 from .models import *
 from rest_framework import generics
 from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from users.models import User
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
 
@@ -32,22 +31,11 @@ class HotelDetail(generics.RetrieveUpdateDestroyAPIView):
             return HotelDetailSpecialPriceSerializer
         return HotelDetailDailyPriceSerializer
 
-    # def get_queryset(self, *args):
-    #     # hotel_id = self.kwargs['pk']
-    #     # room_id = HotelRoom.objects.filter(hotel__id=hotel_id)
-    #     if Hotel.objects.prefetch_related('hotel_rooms__special_room_price'):
-    #         return Hotel.objects.prefetch_related('hotel_rooms__special_room_price')
-    #     return Hotel.objects.prefetch_related('hotel_rooms__daily_room_price')
-    #     # try:
-        #     special_price =
-        #     return special_price
-        # except:
-        #     daily_price =
-        #     return daily_price
-        # return Hotel.objects.filter(id=hotel_id)
-
 
 class CreateReservation(APIView):
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, pk):
         room = get_object_or_404(HotelRoom, pk=pk)
 
@@ -62,12 +50,9 @@ class CreateReservation(APIView):
         reservation = HotelRoomReservation()
         reservation.room = room
         reservation.passenger = passenger
-        reservation.user = User.objects.get(id=1)
+        user = self.request.user
+        reservation.user = User.objects.get(id=user.id)
 
         HotelRoomReservation.save(reservation)
 
         return Response(status=status.HTTP_201_CREATED)
-
-# @api_view(['POST'])
-# def create_reservation(request, pk):
-#     pass
