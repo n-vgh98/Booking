@@ -49,6 +49,8 @@ class CreateReservation(APIView):
 
         reservation = HotelRoomReservation()
         reservation.room = room
+        reservation.start_date = request.data['start_date']
+        reservation.end_date = request.data['end_date']
         reservation.passenger = passenger
         user = self.request.user
         reservation.user = User.objects.get(id=user.id)
