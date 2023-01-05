@@ -134,9 +134,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 if not DEBUG:
-    MINIO_ENDPOINT = config('MINIO_ENDPOINT')
-    MINIO_ACCESS_KEY = config('MINIO_ACCESS_KEY')
-    MINIO_SECRET_KEY = config('MINIO_SECRET_KEY')
+    MINIO_ENDPOINT = config('MINIO_ENDPOINT', default='booking-vgh-storage.darkube.app')
+    MINIO_ACCESS_KEY = config('MINIO_ACCESS_KEY', default='k9a8cnRqr5E0GL5fuvtKCDKeLbMPk16K')
+    MINIO_SECRET_KEY = config('MINIO_SECRET_KEY', default='7fLzgmJcpdPaRHnSAnxxWDm2rCin99r3')
     MINIO_USE_HTTPS = True
     MINIO_URL_EXPIRY_HOURS = timedelta(days=1)  # Default is 7 days (longest) if not defined
 
