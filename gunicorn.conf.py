@@ -1,4 +1,4 @@
-wsgi_app = 'imdb.wsgi:application'
+wsgi_app = 'config.wsgi:application'
 loglevel = 'debug'
 workers = 2
 bind = '0.0.0.0:8000'
