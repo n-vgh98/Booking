@@ -32,7 +32,7 @@ class HotelRoomDailyPriceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HotelRoom
-        fields = ('title', 'description', 'price', 'floor', 'breakfast', 'extra_bed',
+        fields = ('title', 'description', 'price', 'breakfast', 'extra_bed',
                   'room_features')
 
 
@@ -55,7 +55,7 @@ class HotelRoomSpecialPriceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HotelRoom
-        fields = ('title', 'description', 'price', 'floor', 'breakfast', 'extra_bed',
+        fields = ('title', 'description', 'price', 'breakfast', 'extra_bed',
                   'room_features')
 
     # def validators(self, fields):
