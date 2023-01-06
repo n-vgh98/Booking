@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
-
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.models import User
 from .serializers import *
 from .models import *
@@ -24,23 +26,30 @@ class ResidenceDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ResidenceDetailSerializer
     queryset = Residence.objects.filter(is_valid=True)
 
-@api_view(['POST'])
-def create_reservation(request, pk):
-    residence = get_object_or_404(Residence, pk=pk)
 
-    passenger = ResidencePassengerReservation()
-    passenger.first_name = request.data['firstname']
-    passenger.last_name = request.data['lastname']
-    passenger.national_id = request.data['national_id']
-    passenger.gender = request.data['gender']
-    passenger.age = request.data['age']
-    passenger.save(passenger)
+class CreateReservation(APIView):
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated]
 
-    reservation = ResidenceReservation()
-    reservation.residence = residence
-    reservation.passenger = passenger
-    reservation.user = User.objects.get(id=1)
+    def post(self, request, pk):
+        residence = get_object_or_404(Residence, pk=pk)
 
-    ResidenceReservation.save(reservation)
+        passenger = ResidencePassengerReservation()
+        passenger.first_name = request.data['firstname']
+        passenger.last_name = request.data['lastname']
+        passenger.national_id = request.data['national_id']
+        passenger.gender = request.data['gender']
+        passenger.age = request.data['age']
+        passenger.save(passenger)
 
-    return Response(status=status.HTTP_201_CREATED)
+        reservation = ResidenceReservation()
+        reservation.residence = residence
+        reservation.start_date = request.data['start_date']
+        reservation.end_date = request.data['end_date']
+        reservation.passenger = passenger
+        user = self.request.user
+        reservation.user = User.objects.get(id=user.id)
+
+        ResidenceReservation.save(reservation)
+
+        return Response(status=status.HTTP_201_CREATED)
