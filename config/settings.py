@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     #third_apps
     'rest_framework',
+    'drf_spectacular',
 
     #my_apps
     'users',
@@ -172,6 +173,7 @@ REST_FRAMEWORK = {
     'AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 SIMPLE_JWT = {

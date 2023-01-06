@@ -50,3 +50,19 @@ class CreateReservation(APIView):
         FlightReservation.save(reservation)
 
         return Response(status=status.HTTP_201_CREATED)
+
+class FlighttRate(generics.CreateAPIView):
+    serializer_class = FlightRateSerializer
+    queryset = FlightRate.objects.all()
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        flight = get_object_or_404(FlightTicket, pk=pk)
+        rate = FlightRate()
+        rate.flight = flight
+        user = self.request.user
+        rate.user = User.objects.get(id=user.id)
+        rate.rate = request.data['rate']
+        rate.save(rate)
+        return Response(status=status.HTTP_201_CREATED)

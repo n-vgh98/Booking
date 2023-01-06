@@ -81,6 +81,16 @@ class HotelCommentSerializer(serializers.ModelSerializer):
         model = HotelComment
         fields = ('user', 'comment_body', 'created_time')
 
+    def create(self, validated_data):
+        user = self.context['request'].user
+        validated_data['user'] = user
+        return super(HotelCommentSerializer, self).create(validated_data)
+
+    def to_representation(self, instance):
+        res = super(HotelCommentSerializer, self).to_representation(instance)
+        res['hotel'] = HotelSerializer(instance.movie).data
+        return res
+
 class HotelRateSerializer(serializers.ModelSerializer):
     user = serializers.CharField(source='user.phone_number', read_only=True)
 

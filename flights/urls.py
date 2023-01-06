@@ -5,6 +5,7 @@ from .views import *
 
 urlpatterns = [
     path('', views.FlightsList.as_view(), name='flights_list'),
-    path('<int:pk>/reservation/', CreateReservation.as_view(), name='flight_passengers')
+    path('<int:pk>/reservation/', CreateReservation.as_view(), name='flight_passengers'),
+    path('<int:pk>/rate/', views.FlighttRate.as_view(), name='flight_rate'),
 
 ]

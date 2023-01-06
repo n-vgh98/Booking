@@ -80,6 +80,10 @@ class AdminResidenceReservationsPassenger(admin.ModelAdmin):
     list_display = ('id', 'national_id')
     search_filed = ('national_id', )
 
+
+class AdminResidenceRate(admin.ModelAdmin):
+    list_display = ('id', 'rate', 'user', 'residence')
+
 admin.site.register(Residence, AdminResidence)
 admin.site.register(ResidenceCategory, AdminResidenceCategory)
 admin.site.register(ResidenceFeature, AdminResidenceFeature)
@@ -91,3 +95,4 @@ admin.site.register(ResidenceGallery, AdminResidenceGallery)
 admin.site.register(ResidenceGalleryImage, AdminResidenceGalleryImage)
 admin.site.register(ResidenceReservation, AdminResidenceReservation)
 admin.site.register(ResidencePassengerReservation, AdminResidenceReservationsPassenger)
+admin.site.register(ResidenceRate, AdminResidenceRate)

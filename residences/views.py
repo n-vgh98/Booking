@@ -9,6 +9,8 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework import mixins, generics, viewsets
+
 
 
 class ResidenceList(generics.ListCreateAPIView):
@@ -65,3 +67,25 @@ class CreateReservation(APIView):
             return Response('this residence reserved before you', status=status.HTTP_400_BAD_REQUEST)
         ResidenceReservation.save(reservation)
         return Response(status=status.HTTP_201_CREATED)
+
+class ResiddenceRate(generics.CreateAPIView):
+    serializer_class = ResidenceRateSerializer
+    queryset = ResidenceRate.objects.all()
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        residence = get_object_or_404(Residence, pk=pk)
+        rate = ResidenceRate()
+        rate.residence = residence
+        user = self.request.user
+        rate.user = User.objects.get(id=user.id)
+        rate.rate = request.data['rate']
+        rate.save(rate)
+        return Response(status=status.HTTP_201_CREATED)
+
+class ResidenceComment(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    serializer_class = ResidenceCommentSerializer
+    queryset = ResidenceComment.objects.all()
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated]

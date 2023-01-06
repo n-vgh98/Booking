@@ -59,6 +59,19 @@ class AdminFlightReservationsPassenger(admin.ModelAdmin):
     # def get_reservation_id(self, obj):
     #     return obj.reservation.id
 
+class AdminFlightRate(admin.ModelAdmin):
+    list_display = ('id', 'rate', 'user', 'flight')
+
+class AdminFlightComment(admin.ModelAdmin):
+    list_display = ('id', 'flight', 'user', 'status')
+    list_filter = ('status',)
+
+    def save_model(self, request, obj, form, change):
+        if change and not obj.validated_by and 'status' in form.changed_data:
+            obj.validated_by = request.user
+
+        obj.save()
+
 
 admin.site.register(Airport, AdminAirport)
 admin.site.register(TerminalAirport, AdminTerminalAirport)
@@ -66,3 +79,5 @@ admin.site.register(FlightTicket, AdminFlightTicket)
 admin.site.register(AirlineCompany, AdminAirline)
 admin.site.register(FlightReservation, AdminFlightReservations)
 admin.site.register(FlightPassengerReservation, AdminFlightReservationsPassenger)
+admin.site.register(FlightRate, AdminFlightRate)
+admin.site.register(FlightComment, AdminFlightComment)

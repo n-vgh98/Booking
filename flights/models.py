@@ -1,6 +1,7 @@
 from django.db import models
 from abstracts.models import AbstractTerminal, AbstractTicket, AbstractPassenger, AbstractReservation, AbstractRate, \
     AbstractComment
+from django.db.models import Avg
 
 
 class Airport(AbstractTerminal):
@@ -48,6 +49,11 @@ class FlightTicket(AbstractTicket):
     flight_class = models.PositiveSmallIntegerField(choices=FLIGHT_CLASS)
     flight_number = models.PositiveSmallIntegerField()
     luggage_allowance = models.PositiveSmallIntegerField(default=20)
+
+    @property
+    def average_rating(self):
+        rate = self.flight_rates.all().aggregate(avg=Avg('rate'))
+        return rate.get('avg') or 1
 
 
 class FlightPassengerReservation(AbstractPassenger):

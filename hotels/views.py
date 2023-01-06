@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from users.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+from rest_framework import mixins, generics, viewsets
 
 
 class HotelLists(generics.ListCreateAPIView):
@@ -88,3 +89,10 @@ class RateHotel(generics.CreateAPIView):
         rate.rate = request.data['rate']
         rate.save(rate)
         return Response(status=status.HTTP_201_CREATED)
+
+
+class HotelComment(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    serializer_class = HotelCommentSerializer
+    queryset = HotelComment.objects.all()
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [IsAuthenticated]

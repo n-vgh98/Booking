@@ -22,6 +22,22 @@ class AirlineCompanySerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 
+class FlightCommentSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.phone_number', read_only=True)
+
+    class Meta:
+        model = FlightComment
+        fields = ('user', 'comment_body', 'created_time')
+
+
+class FlightRateSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.phone_number', read_only=True)
+
+    class Meta:
+        model = FlightRate
+        fields = ('id', 'flight', 'user', 'rate',)
+
+
 class PassengerReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = FlightPassengerReservation
@@ -34,6 +50,7 @@ class FlightSerializer(serializers.ModelSerializer):
     airline = serializers.CharField(source='airline.name', read_only=True)
     flight_class = serializers.SerializerMethodField()
     type = serializers.SerializerMethodField()
+    flight_comments = FlightCommentSerializer(many=True, read_only=True)
 
     def get_flight_class(self, obj):
         return obj.get_flight_class_display()
@@ -44,8 +61,8 @@ class FlightSerializer(serializers.ModelSerializer):
     class Meta:
         model = FlightTicket
         fields = (
-            'origin', 'destination', 'capacity', 'price', 'airline', 'type', 'flight_class', 'flight_number',
-            'luggage_allowance', 'date_of_departure', 'time_of_departure')
+            'origin','destination', 'capacity', 'price', 'airline', 'type', 'flight_class', 'flight_number',
+            'luggage_allowance', 'date_of_departure', 'time_of_departure', 'flight_comments', 'average_rating')
 
 
 class FlightPassengerSerializer(serializers.ModelSerializer):

@@ -27,6 +27,25 @@ class ResidenceCommentSerializer(serializers.ModelSerializer):
         model = ResidenceComment
         fields = ('user', 'comment_body', 'created_time')
 
+    def create(self, validated_data):
+        user = self.context['request'].user
+        validated_data['user'] = user
+        return super(ResidenceCommentSerializer, self).create(validated_data)
+
+    def to_representation(self, instance):
+        res = super(ResidenceCommentSerializer, self).to_representation(instance)
+        res['residence'] = ResidenceSerializer(instance.movie).data
+        return res
+
+
+
+class ResidenceRateSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.phone_number', read_only=True)
+
+    class Meta:
+        model = ResidenceRate
+        fields = ('id', 'residence', 'user', 'rate',)
+
 
 class ResidenceDailyPriceSerializer(serializers.ModelSerializer):
     class Meta:
