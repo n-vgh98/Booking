@@ -1,5 +1,6 @@
 from django.db import models
-from abstracts.models import AbstractTerminal, AbstractTicket, AbstractPassenger, AbstractReservation
+from abstracts.models import AbstractTerminal, AbstractTicket, AbstractPassenger, AbstractReservation, AbstractRate, \
+    AbstractComment
 
 
 class Airport(AbstractTerminal):
@@ -69,3 +70,12 @@ class FlightReservation(AbstractReservation):
         return super(FlightReservation, self).save(*args, *kwargs)
 
 
+class FlightRate(AbstractRate):
+    flight = models.ForeignKey(FlightTicket, on_delete=models.CASCADE, related_name='flight_rates')
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=('user', 'flight'), name='unique_user_flight_rate')]
+
+
+class FlightComment(AbstractComment):
+    flight = models.ForeignKey(FlightTicket, on_delete=models.CASCADE, related_name='flight_comments')

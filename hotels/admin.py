@@ -117,6 +117,9 @@ class AdminHotelRoomReservationsPassenger(admin.ModelAdmin):
     list_display = ('id', 'national_id')
     search_filed = ('national_id', )
 
+class AdminHotelRate(admin.ModelAdmin):
+    list_display = ('id', 'rate', 'user', 'hotel')
+
 admin.site.register(Hotel, AdminHotel)
 admin.site.register(HotelRoom, AdminHotelRoom)
 admin.site.register(HotelFeature, AdminHotelFeature)
@@ -129,4 +132,5 @@ admin.site.register(HotelGallery, AdminHotelGallery)
 admin.site.register(HotelGalleryImage, AdminHotelGalleryImage)
 admin.site.register(HotelRoomReservation, AdminHotelRoomReservation)
 admin.site.register(HotelRoomPassengerReservation, AdminHotelRoomReservationsPassenger)
+admin.site.register(HotelRate, AdminHotelRate)
 # admin.site.register(HotelLocation, AdminHotelLocation)

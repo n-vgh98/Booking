@@ -17,8 +17,16 @@ class ResidenceList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         city = self.request.data.get('city')
+        start_date = self.request.data.get('start_date')
+        end_date = self.request.data.get('end_date')
+        number = self.request.data.get('number')
+        residences_reserved = ResidenceReservation.objects.filter(start_date=start_date, end_date=end_date)
+        residende_id = []
+        for residence in residences_reserved:
+            residende_id.append(residence.id)
+
         if self.request.method == 'GET':
-            query = Residence.objects.filter(city__name=city)
+            query = Residence.objects.filter(city__name=city) and Residence.objects.exclude(id__in=residende_id)
             return query
 
 
@@ -49,7 +57,11 @@ class CreateReservation(APIView):
         reservation.passenger = passenger
         user = self.request.user
         reservation.user = User.objects.get(id=user.id)
-
+        residences_reserved = ResidenceReservation.objects.filter(start_date=request.data['start_date'],
+                                                                  end_date=request.data['end_date'])
+        residende_id = []
+        for residence.id in residences_reserved:
+            residende_id.append(residence.id)
+            return Response('this residence reserved before you', status=status.HTTP_400_BAD_REQUEST)
         ResidenceReservation.save(reservation)
-
         return Response(status=status.HTTP_201_CREATED)

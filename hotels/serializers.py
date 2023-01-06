@@ -81,6 +81,13 @@ class HotelCommentSerializer(serializers.ModelSerializer):
         model = HotelComment
         fields = ('user', 'comment_body', 'created_time')
 
+class HotelRateSerializer(serializers.ModelSerializer):
+    user = serializers.CharField(source='user.phone_number', read_only=True)
+
+    class Meta:
+        model = HotelRate
+        fields = ('id', 'hotel', 'user', 'rate',)
+
 
 class HotelDetailDailyPriceSerializer(serializers.ModelSerializer):
     hotel_rooms = HotelRoomDailyPriceSerializer(many=True)
